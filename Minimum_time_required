@@ -1,0 +1,85 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int minutes = 999;
+
+void combinationUtil(int arr[], int data[],int start, int end,int index, int m);
+
+void printCombination(int arr[], int n, int m);
+
+void printCombination(int arr[], int n, int m){
+    
+	int data[m];
+	combinationUtil(arr, data, 0, n-1, 0, m);
+	
+}
+
+void combinationUtil(int arr[], int data[],int start, int end,int index, int m){
+    
+    int sum = 0;
+    
+	if (index == m)
+	{
+	   int mid = m/2;
+	   int sum = 0;
+	   for(int j=0; j<mid; j++){
+	       int num;
+	       num = data[j];
+	       sum = sum+(data[mid]-num);
+	   }
+	   for(int j=mid; j<m; j++){
+	       int num;
+	       num = data[j];
+	       sum = sum+(num-data[mid]);
+	   }
+	   
+	   if(sum<minutes){
+	       minutes = sum;
+	   }
+	}
+	for (int i = start; i <= end &&	end - i + 1 >= m - index; i++)
+	{
+		data[index] = arr[i];
+		combinationUtil(arr, data, i+1,	end, index+1, m);
+	}
+	
+}
+
+int getMinimumTime(int input1, int input2, int input3, int input4[]){
+
+  int n,m,k;
+  n = input1;
+  m = input2;
+  k = input3;
+  int arr[n];
+  for(int i=0; i<n; i++){
+      arr[i] = input4[i];
+  }
+  sort(arr, arr+n);
+  printCombination(arr, n, m);
+  if(k>0)
+	    return minutes/k;
+  else
+	    return k;
+	    
+}
+int main(){
+    
+    int n,m,k;
+    cout<<" Total number of wheels alex has:  ";
+    cin>>n;
+    int arr[n];
+    cout<<"Enter the Total wheels Alex would like to put on his car : ";
+    cin>>m;
+    cout<<"Maximum number of times Alex can increase the air pressure for a single wheel: ";
+    cin>>k;
+    cout<<"enter the Different air pressures on each wheel available with Alex."<<endl;
+    for(int i=0; i<n; i++){
+        cin>>arr[i];
+    }
+    cout<<"The minutes taken to  him to make "<<m<<" wheels with same air pressure is  ";
+    cout<<getMinimumTime( n, m, k, arr);
+    return 0;
+    
+}
